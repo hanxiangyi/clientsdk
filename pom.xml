@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.ideepmind.client</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<artifactId>client-sdk</artifactId>
+	<packaging>jar</packaging>
+
+	<name>client-sdk</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>compile</scope>
+		</dependency>
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-hikaricp</artifactId> 
+			<version>5.1.0.Final</version> </dependency> -->
+		<!-- http://mvnrepository.com/artifact/io.swagger/swagger-jersey-jaxrs -->
+		<!-- 
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-core-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${version.jackson}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.20</version>
+		</dependency>-->
+		<dependency>
+	    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.1.54.android</version>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		  <groupId>com.squareup.okhttp3</groupId>
+		  <artifactId>okhttp</artifactId>
+		  <version>3.4.1</version>
+		  <scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<profiles>
+	  <profile>
+	    <id>java8-doclint-disabled</id>
+	    <activation>
+	      <jdk>[1.8,)</jdk>
+	    </activation>
+	    <properties>
+	      <javadoc.opts>-Xdoclint:none</javadoc.opts>
+	    </properties>
+	  </profile>
+	</profiles>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/data</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.14</version>
+                <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals><goal>proguard</goal></goals>
+                   </execution>
+                </executions>
+                <configuration>
+                    <options>
+                    	<option>-dontoptimize </option>                 
+                    	<option>-keepdirectories</option>
+                    	<option>-keepattributes Signature</option>
+                        <option>-keepattributes *Annotation*</option>
+                        <option>-allowaccessmodification</option>
+                        <option>-keep public class * { public *; }</option>
+                        <option>-keepattributes Exceptions</option>
+                        <option>-keepclassmembers class ** { 
+                        @javax.annotation.PostConstruct *;
+                        @org.springframework.beans.factory.annotation.Autowired *;
+                        @com.fasterxml.jackson.annotation.JsonIgnore *;
+                        @com.alibaba.fastjson.annotation.JSONField *; }</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin> 
+		</plugins>
+	</build>
+	
+	<distributionManagement>
+	    <snapshotRepository>
+	        <id>snapshots</id>
+	        <name>ssk1-snapshots</name>
+	        <url>http://www.ideepmind.com/artifactory/libs-snapshot-local</url>
+	    </snapshotRepository>
+	</distributionManagement>
+</project>
